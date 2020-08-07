@@ -2,7 +2,7 @@
 
 ### Description:
 
-A comfortable-to-use inventory management system for small and medium scale groups, such as a household sharing groceries, a small company sharing office supplies, or a community sharing tools.
+An inventory management system for small and medium scale groups, such as a household sharing groceries, a small company sharing office supplies, or a community sharing tools. This app favors user comfort over rigorous data entry, so users can use this app casually and only when they need something from it.
 
 ### User Stories
 
