@@ -62,6 +62,75 @@ An inventory management system for small and medium scale groups, such as a hous
 - ItemForm
 - SearchBar
 
+### Timetable
+
+##### MVP
+|  Task  |  Estimated Time  |  Actual Time  |
+|---|---|---|
+|  Build basic backend                  |  8 h  |    |
+|  Host backend on Heroku               |  1 h  |    |
+|  Add data analysis to backend         |  6 h  |    |
+|  Build sign-in pages                  |  3 h  |    |
+|  Build layout component               |  3 h  |    |
+|  Add navigation buttons               |  3 h  |    |
+|  Build Home page                      |  1 h  |    |
+|  Build event feed components          |  4 h  |    |
+|  Build Activity page                  |  1 h  |    |
+|  Build ActivitySearchbar component    |  1 h  |    |
+|  Build ItemDetails page               |  4 h  |    |
+|  Build ItemForm component             |  3 h  |    |
+|  Build EditItem page                  |  1 h  |    |
+|  Build CreateItem page                |  1 h  |    |
+|  Build Inventory feed components      |  5 h  |    |
+|  Build Inventory page                 |  2 h  |    |
+|  Build InventorySearchbar component   |  4 h  |    |
+|  Add normalization to Inventory       |  3 h  |    |
+|  Style layout                         |  2 h  |    |
+|  Style Activity                       |  2 h  |    |
+|  Style Inventory                      |  2 h  |    |
+|  Style ItemDetails                    |  2 h  |    |
+|  Style ItemForm                       |  2 h  |    |
+| Total                                 |  64 h  |    |
+
+### Timeline
+
+Tuesday
+- Build basic backend
+- Host backend on Heroku
+- Analysis to backend
+
+Wednesday
+- Build sign-in pages
+- Build layout component
+- Add navigation buttons
+- Build Home page
+
+Thursday
+- Build event feed components
+- Build Activity page
+
+Friday
+- Build ActivitySearchbar component
+- Build ItemDetails page
+- Build ItemForm component
+- Build EditItem page
+- Build CreateItem page
+
+Saturday
+- Build Inventory feed components
+- Build Inventory page
+
+Sunday
+- Build InventorySearchbar component
+- Add normalization to Inventory
+
+Monday
+- Style layout
+- Style Activity
+- Style Inventory
+- Style ItemDetails
+- Style ItemForm
+
 ### Additional Libraries
 - React Native
 - Expo
