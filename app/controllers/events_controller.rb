@@ -5,7 +5,19 @@ class EventsController < ApplicationController
   def index
     @events = Event.all
 
-    render json: @events
+    render json: @events.as_json(
+      :only => [:date_time, :event_type, :delta],
+      :include => [
+        :user => {:only => [:id, :name]},
+        :item => {
+          :only => [:id, :name],
+          :include => {:unit => {
+            :only => [:symbol, :singular, :plural],
+            :except => [:created_at, :updated_at]}}
+        }
+      ],
+      :except => [:created_at, :updated_at]
+    )
   end
 
   # GET /events/1
