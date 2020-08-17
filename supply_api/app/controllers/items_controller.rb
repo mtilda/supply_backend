@@ -25,7 +25,7 @@ class ItemsController < ApplicationController
     date_time_of_last_get = nil
     get_time_deltas = []
     
-    # PARSE the selected events
+    # ANALYZE the selected elements
     # DO some action based on the event_type
     @events.each do |event|
 
@@ -44,14 +44,13 @@ class ItemsController < ApplicationController
         date_time_of_last_get = nil
 
       when "GET"
-
         if tracking
           
           if date_time_of_last_get
 
             time_delta = event.date_time - date_time_of_last_get
 
-            if time_delta > 0
+            if time_delta >= 0
               get_time_deltas.push( (time_delta / 86400).floor )
             else
               raise "invalid date_time comparison, events must be sorted in chronological order before analyzing"
@@ -69,7 +68,7 @@ class ItemsController < ApplicationController
 
             time_delta = event.date_time - date_time_of_last_deplete
             
-            if time_delta > 0
+            if time_delta >= 0
               consumption_rates.push( 86400 * quantity_delta / time_delta )
             else
               raise "invalid date_time comparison, events must be sorted in chronological order before analyzing"
