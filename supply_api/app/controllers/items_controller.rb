@@ -25,7 +25,7 @@ class ItemsController < ApplicationController
     date_time_of_last_get = nil
     get_time_deltas = []
     
-    # ANALYZE the selected elements
+    # ANALYZE the selected elements (must be sorted by date_time)
     # DO some action based on the event_type
     @events.each do |event|
 
