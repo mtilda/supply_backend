@@ -8,6 +8,12 @@ class ItemsController < ApplicationController
   def index
     @items = Item.all
 
+    @items.each do |item|
+      analyze_events(item.id)
+    end
+
+    @items = Item.all
+
     render json: @items
   end
 
