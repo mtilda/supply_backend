@@ -84,7 +84,10 @@ Unit.create!([
 
 house = Group.create!({ :name => "House", :url => "house" })
 
-kay = User.create!( :name => "Kay", :handle => "mxk", :email => "mx@k.com", :group => house )
+jay = User.create!( :name => "Jay", :handle => "jay", :email => "j@ay.com", :group => house )
+kay = User.create!( :name => "Kay", :handle => "kay", :email => "k@ay.com", :group => house )
+el = User.create!( :name => "Eli", :handle => "eli", :email => "el@i.com", :group => house )
+em = User.create!( :name => "Emma", :handle => "emm", :email => "em@ma.com", :group => house )
 
 house_groceries = Supply.create!({ :name => "Groceries", :color => "orange", :group => house })
 house_tools = Supply.create!({ :name => "Tools", :color => "grey", :group => house })
@@ -222,16 +225,16 @@ end
 generate_events(
     100,
     Item.where(name: "bread").take,
-    [kay],      # users_array
-    [1,2,3],    # deltas_array
-    [4,5,6,7],  # inverse_consumption_rates_array
-    [0,1,2,3]   # get_delays_array
+    [jay,kay,el,em],    # users_array
+    [1,2,3],            # deltas_array
+    [4,5,6,7],          # inverse_consumption_rates_array
+    [0,1,2,3]           # get_delays_array
 )
 
 generate_events(
     100,
     Item.where(name: "apples").take,
-    [kay],
+    [jay,kay,el,em],
     [5,6,7,8,9,10,11,12,13,14,15,16],
     [1,1.5,2],
     [0,1,2]
@@ -240,7 +243,7 @@ generate_events(
 generate_events(
     100,
     Item.where(name: "mustard").take,
-    [kay],
+    [jay,kay,el,em],
     [1,2],
     [12,13,14,14,14,15,16,17,18],
     [0,1,2,3]
@@ -249,7 +252,7 @@ generate_events(
 generate_events(
     100,
     Item.where(name: "ketchup").take,
-    [kay],
+    [jay,kay,el,em],
     [1,2],
     [12,13,14,14,14,15,16,17,18],
     [0,1,2,3]
@@ -258,7 +261,7 @@ generate_events(
 generate_events(
     100,
     Item.where(name: "lettuce").take,
-    [kay],
+    [jay,kay,el,em],
     [1,2,3,4],
     [8,9,10,11,12,13,14],
     [0,1,2,3]
@@ -267,7 +270,7 @@ generate_events(
 generate_events(
     100,
     Item.where(name: "rice").take,
-    [kay],
+    [jay,kay,el,em],
     [1,2,3,4],
     [30,31,36,38,41,42,46,48,52,54,55,59,60],
     [0,1,2,3]
@@ -276,7 +279,7 @@ generate_events(
 generate_events(
     100,
     Item.where(name: "lentils").take,
-    [kay],
+    [jay,kay,el,em],
     [1,2,3,4],
     [30,31,36,38,41,42,46,48,52,54,55,59,60],
     [0,1,2,3]
@@ -285,7 +288,7 @@ generate_events(
 generate_events(
     100,
     Item.where(name: "milk").take,
-    [kay],
+    [jay,kay,el,em],
     [1,2],
     [12,13,14,14,14,15],
     [0,1,2,3]
@@ -294,7 +297,7 @@ generate_events(
 generate_events(
     100,
     Item.where(name: "orange juice").take,
-    [kay],
+    [jay,kay,el,em],
     [1,2],
     [12,13,14,14,14,15],
     [0,1,2,3]
