@@ -24,7 +24,23 @@ class ItemsController < ApplicationController
 
     @item = Item.find(params[:id])
 
-    render :json => @item
+    render :json => @item.to_json(
+      :only => [
+        :id,
+        :name,
+        :expiration,
+        :is_tracked,
+        :is_depleted,
+        :is_running_out,
+        :average_consumption_rate_per_day,
+        :average_get_time_delta
+      ],
+      :include => {
+        :unit => {
+          :only => [:symbol, :singular, :plural]
+        }
+      }
+    )
   end
 
   # POST /items
