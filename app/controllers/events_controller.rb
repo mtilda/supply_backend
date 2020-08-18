@@ -1,10 +1,20 @@
 class EventsController < ApplicationController
   before_action :set_event, only: [:show, :update, :destroy]
 
+  # GET groups/1/supplies/1/events
   # GET groups/1/supplies/1/items/1/events
   def index
-    @events = Event.all
-
+    params[:item_id] ?
+      @events = Event.joins(:item)
+        .where(
+          item_id: params[:item_id],
+          items: {supply_id: params[:supply_id]}
+        )
+    : @events = Event.joins(:item)
+      .where(
+        items: {supply_id: params[:supply_id]}
+      )
+    
     render json: @events.as_json(
       :only => [:date_time, :event_type, :delta],
       :include => [
