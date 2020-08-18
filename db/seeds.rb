@@ -181,8 +181,8 @@ require 'time'
 
 
 def generate_events(iterations, item, users_array, deltas_array, inverse_consumption_rates_array, get_delays_array)
-    now = Time.now
     day = 86400
+    now = Time.now - day * (deltas_array * inverse_consumption_rates_array.sample - get_delays_array.sample)
     events = []
     current_type = "GET"
     current_quantity = 0
