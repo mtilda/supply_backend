@@ -4,7 +4,7 @@ Rails.application.routes.draw do
     resources :supplies, only: [:create, :destroy, :index, :show, :update] do
       resources :events, only: [:index]
       resources :items, only: [:create, :destroy, :index, :show, :update] do
-        # resources :events, only: [:index, :create]
+        resources :events, only: [:index, :create]
       end
       resources :users, only: [:create, :destroy, :index, :show, :update]
     end
