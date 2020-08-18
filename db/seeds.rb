@@ -192,7 +192,7 @@ def generate_events(iterations, item, users_array, deltas_array, inverse_consump
             now -= day * get_delays_array.sample
             delta = deltas_array.sample
             current_quantity += delta
-            current_type = "DEPLETE"
+            current_type = ["GET","DEPLETE"].sample
             
             events.push({
                 :date_time => now,
