@@ -178,99 +178,218 @@ grocery_items = Item.create!([
 ])
 
 require 'time'
-day = 86400
-now = Time.now - (15 * day)
 
-Event.create!([
-    {
-        :date_time => now,
-        :event_type => "START",
-        :delta => nil,
-        :item => Item.where(name: "bread").take,
-        :user => kay
-    },
-    {
-        :date_time => now + 2 * day,
-        :event_type => "GET",
-        :delta => 2,
-        :item => Item.where(name: "bread").take,
-        :user => kay
-    },
-    {
-        :date_time => now + 4 * day,
-        :event_type => "DEPLETE",
-        :delta => nil,
-        :item => Item.where(name: "bread").take,
-        :user => kay
-    },
-    {
-        :date_time => now + 6 * day,
-        :event_type => "GET",
-        :delta => 2,
-        :item => Item.where(name: "bread").take,
-        :user => kay
-    },
-    {
-        :date_time => now + 8 * day,
-        :event_type => "DEPLETE",
-        :delta => nil,
-        :item => Item.where(name: "bread").take,
-        :user => kay
-    },
-    {
-        :date_time => now + 9 * day,
-        :event_type => "DEPLETE",
-        :delta => nil,
-        :item => Item.where(name: "bread").take,
-        :user => kay
-    },
-    {
-        :date_time => now + 10 * day,
-        :event_type => "GET",
-        :delta => 2,
-        :item => Item.where(name: "bread").take,
-        :user => kay
-    },
-    {
-        :date_time => now + 12 * day,
-        :event_type => "DEPLETE",
-        :delta => nil,
-        :item => Item.where(name: "bread").take,
-        :user => kay
-    },
-    {
-        :date_time => now + 14 * day,
-        :event_type => "GET",
-        :delta => 2,
-        :item => Item.where(name: "bread").take,
-        :user => kay
-    },
-    {
-        :date_time => now + 16 * day,
-        :event_type => "DEPLETE",
-        :delta => nil,
-        :item => Item.where(name: "bread").take,
-        :user => kay
-    },
-    {
-        :date_time => now + 19 * day,
-        :event_type => "GET",
-        :delta => 1,
-        :item => Item.where(name: "bread").take,
-        :user => kay
-    },
-    {
-        :date_time => now + 20 * day,
-        :event_type => "DEPLETE",
-        :delta => nil,
-        :item => Item.where(name: "bread").take,
-        :user => kay
-    },
-    {
-        :date_time => now + 22 * day,
-        :event_type => "GET",
-        :delta => 2,
-        :item => Item.where(name: "bread").take,
-        :user => kay
-    },
-])
+
+def generate_events(iterations, item, users_array, deltas_array, inverse_consumption_rates_array, get_delays_array)
+    now = Time.now
+    day = 86400
+    events = []
+    current_type = "GET"
+    current_quantity = 0
+
+    iterations.times do
+        if current_type == "GET"
+            now -= day * get_delays_array.sample
+            delta = deltas_array.sample
+            current_quantity += delta
+            current_type = "DEPLETE"
+            
+            events.push({
+                :date_time => now,
+                :event_type => "GET",
+                :delta => delta,
+                :item => item,
+                :user => users_array.sample
+            })
+        elsif current_type == "DEPLETE"
+            now -= day * current_quantity * inverse_consumption_rates_array.sample
+            current_quantity = 0
+            current_type = "GET"
+
+            events.push({
+                :date_time => now,
+                :event_type => "DEPLETE",
+                :delta => nil,
+                :item => item,
+                :user => users_array.sample
+            })
+        end
+    end
+
+    Event.create!(events)
+end
+
+generate_events(
+    100,
+    Item.where(name: "bread").take,
+    [kay],      # users_array
+    [1,2,3],    # deltas_array
+    [4,5,6,7],  # inverse_consumption_rates_array
+    [0,1,2,3]   # get_delays_array
+)
+
+generate_events(
+    100,
+    Item.where(name: "apples").take,
+    [kay],
+    [5,6,7,8,9,10,11,12,13,14,15,16],
+    [1,1.5,2],
+    [0,1,2]
+)
+
+generate_events(
+    100,
+    Item.where(name: "mustard").take,
+    [kay],
+    [1,2],
+    [12,13,14,14,14,15,16,17,18],
+    [0,1,2,3]
+)
+
+generate_events(
+    100,
+    Item.where(name: "ketchup").take,
+    [kay],
+    [1,2],
+    [12,13,14,14,14,15,16,17,18],
+    [0,1,2,3]
+)
+
+generate_events(
+    100,
+    Item.where(name: "lettuce").take,
+    [kay],
+    [1,2,3,4],
+    [8,9,10,11,12,13,14],
+    [0,1,2,3]
+)
+
+generate_events(
+    100,
+    Item.where(name: "rice").take,
+    [kay],
+    [1,2,3,4],
+    [30,31,36,38,41,42,46,48,52,54,55,59,60],
+    [0,1,2,3]
+)
+
+generate_events(
+    100,
+    Item.where(name: "lentils").take,
+    [kay],
+    [1,2,3,4],
+    [30,31,36,38,41,42,46,48,52,54,55,59,60],
+    [0,1,2,3]
+)
+
+generate_events(
+    100,
+    Item.where(name: "milk").take,
+    [kay],
+    [1,2],
+    [12,13,14,14,14,15],
+    [0,1,2,3]
+)
+
+generate_events(
+    100,
+    Item.where(name: "orange juice").take,
+    [kay],
+    [1,2],
+    [12,13,14,14,14,15],
+    [0,1,2,3]
+)
+
+# Event.create!([
+    # {
+    #     :date_time => now,
+    #     :event_type => "START",
+    #     :delta => nil,
+    #     :item => Item.where(name: "bread").take,
+    #     :user => kay
+    # },
+#     {
+#         :date_time => now + 2 * day,
+#         :event_type => "GET",
+#         :delta => 2,
+#         :item => Item.where(name: "bread").take,
+#         :user => kay
+#     },
+#     {
+#         :date_time => now + 4 * day,
+#         :event_type => "DEPLETE",
+#         :delta => nil,
+#         :item => Item.where(name: "bread").take,
+#         :user => kay
+#     },
+#     {
+#         :date_time => now + 6 * day,
+#         :event_type => "GET",
+#         :delta => 2,
+#         :item => Item.where(name: "bread").take,
+#         :user => kay
+#     },
+#     {
+#         :date_time => now + 8 * day,
+#         :event_type => "DEPLETE",
+#         :delta => nil,
+#         :item => Item.where(name: "bread").take,
+#         :user => kay
+#     },
+#     {
+#         :date_time => now + 9 * day,
+#         :event_type => "DEPLETE",
+#         :delta => nil,
+#         :item => Item.where(name: "bread").take,
+#         :user => kay
+#     },
+#     {
+#         :date_time => now + 10 * day,
+#         :event_type => "GET",
+#         :delta => 2,
+#         :item => Item.where(name: "bread").take,
+#         :user => kay
+#     },
+#     {
+#         :date_time => now + 12 * day,
+#         :event_type => "DEPLETE",
+#         :delta => nil,
+#         :item => Item.where(name: "bread").take,
+#         :user => kay
+#     },
+#     {
+#         :date_time => now + 14 * day,
+#         :event_type => "GET",
+#         :delta => 2,
+#         :item => Item.where(name: "bread").take,
+#         :user => kay
+#     },
+#     {
+#         :date_time => now + 16 * day,
+#         :event_type => "DEPLETE",
+#         :delta => nil,
+#         :item => Item.where(name: "bread").take,
+#         :user => kay
+#     },
+#     {
+#         :date_time => now + 19 * day,
+#         :event_type => "GET",
+#         :delta => 1,
+#         :item => Item.where(name: "bread").take,
+#         :user => kay
+#     },
+#     {
+#         :date_time => now + 20 * day,
+#         :event_type => "DEPLETE",
+#         :delta => nil,
+#         :item => Item.where(name: "bread").take,
+#         :user => kay
+#     },
+#     {
+#         :date_time => now + 22 * day,
+#         :event_type => "GET",
+#         :delta => 2,
+#         :item => Item.where(name: "bread").take,
+#         :user => kay
+#     },
+# ])
