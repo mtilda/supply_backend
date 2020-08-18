@@ -14,9 +14,9 @@ class ItemsController < ApplicationController
   # GET /items/1
   def show
     
-    analyze_events(1)
+    analyze_events(params[:id])
 
-    @item = Item.find(1)
+    @item = Item.find(params[:id])
 
     render :json => @item
   end
