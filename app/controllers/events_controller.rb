@@ -10,10 +10,12 @@ class EventsController < ApplicationController
           item_id: params[:item_id],
           items: {supply_id: params[:supply_id]}
         )
+        .order(date_time: :desc)
     : @events = Event.joins(:item)
       .where(
         items: {supply_id: params[:supply_id]}
       )
+      .order(date_time: :desc)
     
     render json: @events.as_json(
       :only => [:date_time, :event_type, :delta],
