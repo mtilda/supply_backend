@@ -14,7 +14,23 @@ class ItemsController < ApplicationController
 
     @items = Item.all
 
-    render json: @items
+    render json: @items.to_json(
+      :only => [
+        :id,
+        :name,
+        :expiration,
+        :is_tracked,
+        :is_depleted,
+        :is_running_out,
+        :average_consumption_rate_per_day,
+        :average_get_time_delta
+      ],
+      :include => {
+        :unit => {
+          :only => [:symbol, :singular, :plural]
+        }
+      }
+    )
   end
 
   # GET /items/1
