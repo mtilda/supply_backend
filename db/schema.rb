@@ -41,6 +41,8 @@ ActiveRecord::Schema.define(version: 2020_08_11_184607) do
     t.boolean "is_tracked"
     t.boolean "is_depleted"
     t.boolean "is_running_out"
+    t.decimal "average_consumption_rate_per_day", precision: 16, scale: 8
+    t.decimal "average_get_time_delta", precision: 16, scale: 8
     t.bigint "supply_id", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
