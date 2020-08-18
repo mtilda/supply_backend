@@ -21,7 +21,7 @@ class ItemsController < ApplicationController
     tracking = true
     quantity_delta = 0
     date_time_of_last_deplete = nil
-    consumption_rates = []
+    consumption_rates_per_day = []
     date_time_of_last_get = nil
     get_time_deltas = []
     
@@ -69,7 +69,7 @@ class ItemsController < ApplicationController
             time_delta = event.date_time - date_time_of_last_deplete
             
             if time_delta >= 0
-              consumption_rates.push( 86400 * quantity_delta / time_delta )
+              consumption_rates_per_day.push( 86400 * quantity_delta / time_delta )
             else
               raise "invalid date_time comparison, events must be sorted in chronological order before analyzing"
             end
@@ -92,10 +92,13 @@ class ItemsController < ApplicationController
       },
       :except => [ :updated_at, :created_at ]
     )
+    
+    average_consumption_rate_per_day = consumption_rates_per_day.inject{ |sum, value| sum + value }.to_f / consumption_rates_per_day.length
+    average_get_time_delta = get_time_deltas.inject{ |sum, value| sum + value }.to_f / get_time_deltas.length
 
-    # APPEND average_consumption and average_frequency to item_object
-    item_object[:consumption_rates] = consumption_rates
-    item_object[:get_time_deltas] = get_time_deltas
+    # APPEND item statistics to item_object
+    item_object[:average_consumption_rate_per_day] = average_consumption_rate_per_day
+    item_object[:average_get_time_delta] = average_get_time_delta
 
     render :json => { :item => item_object }
   end
