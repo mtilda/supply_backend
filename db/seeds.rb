@@ -193,6 +193,8 @@ def generate_events(iterations, item, users_array, deltas_array, inverse_consump
     iterations.times do
         if next_type == "GET"
             
+            delta = deltas_array.sample
+            
             events.push({
                 :date_time => now,
                 :event_type => "GET",
@@ -202,7 +204,6 @@ def generate_events(iterations, item, users_array, deltas_array, inverse_consump
             })
 
             now -= day * get_delays_array.sample
-            delta = deltas_array.sample
             current_quantity += delta
             next_type = ["GET","DEPLETE","DEPLETE","DEPLETE"].sample
         
