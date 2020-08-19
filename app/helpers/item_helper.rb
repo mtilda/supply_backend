@@ -73,12 +73,12 @@ module ItemHelper
         end
         
         item_object = @item.as_json(
-        :include => {
-            :events => {
+            :include => {
+                :events => {
+                :except => [ :updated_at, :created_at ]
+                }
+            },
             :except => [ :updated_at, :created_at ]
-            }
-        },
-        :except => [ :updated_at, :created_at ]
         )
         
         average_consumption_rate_per_day = consumption_rates_per_day.inject{ |sum, value| sum + value }.to_f / consumption_rates_per_day.length
