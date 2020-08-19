@@ -123,7 +123,7 @@ Tuesday
 
 ### Code Snippets
 
-This is a helper module in my backend that analyzes the events belonging to a specified item and updates the appropriate attributes of that event
+This is a helper module in my backend that analyzes the events belonging to a specified item and updates the appropriate attributes of that event:
 ```ruby
 module ItemHelper
     def analyze_events (item_id)
@@ -216,5 +216,53 @@ module ItemHelper
             :average_get_time_delta => average_get_time_delta
         })
     end
+end
+```
+
+This is a method I used to auto generate a lot of my seed data:
+
+```ruby
+def generate_events(iterations, item, users_array, deltas_array, inverse_consumption_rates_array, get_delays_array)
+    day = 86400
+    now = Time.now - day * [0,2,4].sample
+    events = []
+    next_type = ["GET","DEPLETE"].sample
+    current_quantity = 0
+
+    iterations.times do
+        if next_type == "GET"
+            
+            delta = deltas_array.sample
+            now -= day * get_delays_array.sample
+            current_quantity += delta
+            next_type = ["GET","DEPLETE","DEPLETE","DEPLETE"].sample
+
+            events.push({
+                :date_time => now,
+                :event_type => "GET",
+                :delta => delta,
+                :item => item,
+                :user => users_array.sample
+            })
+
+        
+        elsif next_type == "DEPLETE"
+            
+            now -= day * current_quantity * inverse_consumption_rates_array.sample
+            current_quantity = 0
+            next_type = "GET"
+
+            events.push({
+                :date_time => now,
+                :event_type => "DEPLETE",
+                :delta => nil,
+                :item => item,
+                :user => users_array.sample
+            })
+
+        end
+    end
+
+    Event.create!(events)
 end
 ```
