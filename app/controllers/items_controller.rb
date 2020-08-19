@@ -33,7 +33,7 @@ class ItemsController < ApplicationController
     )
   end
 
-  # GET /items/1
+  # GET groups/1/supplies/1/items/1
   def show
     
     analyze_events(params[:id])
