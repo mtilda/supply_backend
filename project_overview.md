@@ -69,67 +69,44 @@ An inventory management system for small and medium scale groups, such as a hous
 |---|---|---|
 |  Build basic backend                  |  8 h  |    |
 |  Host backend on Heroku               |  1 h  |    |
-|  Add data analysis to backend         |  6 h  |    |
-|  Build sign-in pages                  |  3 h  |    |
-|  Build layout component               |  3 h  |    |
+|  Add data analysis to backend         |  20 h  |    |
+|  Build Layout component               |  3 h  |    |
 |  Add navigation buttons               |  3 h  |    |
 |  Build Home page                      |  1 h  |    |
-|  Build event feed components          |  4 h  |    |
+|  Build EventFeed components           |  4 h  |    |
 |  Build Activity page                  |  1 h  |    |
-|  Build ActivitySearchbar component    |  1 h  |    |
-|  Build ItemDetails page               |  4 h  |    |
-|  Build ItemForm component             |  3 h  |    |
-|  Build EditItem page                  |  1 h  |    |
-|  Build CreateItem page                |  1 h  |    |
-|  Build Inventory feed components      |  5 h  |    |
-|  Build Inventory page                 |  2 h  |    |
-|  Build InventorySearchbar component   |  4 h  |    |
-|  Add normalization to Inventory       |  3 h  |    |
-|  Style layout                         |  2 h  |    |
-|  Style Activity                       |  2 h  |    |
-|  Style Inventory                      |  2 h  |    |
-|  Style ItemDetails                    |  2 h  |    |
-|  Style ItemForm                       |  2 h  |    |
-| Total                                 |  64 h  |    |
+|  Build ItemSearchBar component        |  4 h  |    |
+|  Build EventCreate component          |  3 h  |    |
+|  Build ItemDetails component          |  4 h  |    |
+| Total                                 |  52 h  |    |
 
 ### Timeline
 
-Tuesday
+Wednesday
 - Build basic backend
 - Host backend on Heroku
-- Analysis to backend
 
-Wednesday
-- Build sign-in pages
-- Build layout component
+Thursday
+- Add data analysis to backend
+- Build Layout component
+
+Friday
 - Add navigation buttons
 - Build Home page
 
-Thursday
-- Build event feed components
+Saturday
+- Build EventFeed components
 - Build Activity page
 
-Friday
-- Build ActivitySearchbar component
-- Build ItemDetails page
-- Build ItemForm component
-- Build EditItem page
-- Build CreateItem page
-
-Saturday
-- Build Inventory feed components
-- Build Inventory page
-
 Sunday
-- Build InventorySearchbar component
-- Add normalization to Inventory
+- Build CreateEvent
 
 Monday
-- Style layout
-- Style Activity
-- Style Inventory
-- Style ItemDetails
-- Style ItemForm
+- Build ItemSearchBar component
+- Build ItemDetails page
+
+Tuesday
+- Finishing touches
 
 ### Additional Libraries
 - React Native
@@ -141,6 +118,98 @@ Monday
 
 ### Code Snippets
 
-```
-// awesome code goes here
+This is a helper module in my backend that analyzes the events belonging to a specified item and updates the appropriate attributes of that event
+```ruby
+module ItemHelper
+    def analyze_events (item_id)
+
+        # SELECT "events".* FROM "events" WHERE "events"."item_id" = <params[:id]> LIMIT 100
+        @events = Event.where(:item_id => item_id).take(100)
+        
+        @events.sort! { |a, b| a.date_time <=> b.date_time }
+        
+        tracking = true
+        quantity_delta = 0
+        date_time_of_last_deplete = nil
+        consumption_rates_per_day = []
+        date_time_of_last_get = nil
+        get_time_deltas = []
+        
+        # ANALYZE the selected elements (must be sorted by date_time)
+        # DO some action based on the event_type
+        @events.each do |event|
+        
+        case event.event_type
+        
+        when "START"
+            tracking = true
+            quantity_delta = 0
+            date_time_of_last_deplete = nil
+            date_time_of_last_get = nil
+        
+        when "STOP"
+            tracking = false
+            quantity_delta = 0
+            date_time_of_last_deplete = nil
+            date_time_of_last_get = nil
+        
+        when "GET"
+            if tracking
+            
+            if date_time_of_last_get
+        
+                time_delta = event.date_time - date_time_of_last_get
+        
+                if time_delta >= 0
+                get_time_deltas.push( (time_delta / 86400).floor )
+                else
+                raise "invalid date_time comparison, events must be sorted in chronological order before analyzing"
+                end
+            end
+            
+            quantity_delta += event.delta.to_f
+            date_time_of_last_get = event.date_time
+            end
+        
+        when "DEPLETE"
+            if tracking
+            
+            if date_time_of_last_deplete && quantity_delta > 0
+        
+                time_delta = event.date_time - date_time_of_last_deplete
+                
+                if time_delta >= 0
+                consumption_rates_per_day.push( 86400 * quantity_delta / time_delta )
+                else
+                raise "invalid date_time comparison, events must be sorted in chronological order before analyzing"
+                end
+            end
+        
+            quantity_delta = 0
+            date_time_of_last_deplete = event.date_time
+            end
+        
+        else
+            raise "invalid event_type: #{event.event_type}, event id: #{event.id}"
+        end
+        end
+        
+        item_object = @item.as_json(
+            :include => {
+                :events => {
+                :except => [ :updated_at, :created_at ]
+                }
+            },
+            :except => [ :updated_at, :created_at ]
+        )
+        
+        average_consumption_rate_per_day = consumption_rates_per_day.inject{ |sum, value| sum + value }.to_f / consumption_rates_per_day.length
+        average_get_time_delta = get_time_deltas.inject{ |sum, value| sum + value }.to_f / get_time_deltas.length
+    
+        Item.find(item_id).update({
+            :average_consumption_rate_per_day => average_consumption_rate_per_day,
+            :average_get_time_delta => average_get_time_delta
+        })
+    end
+end
 ```
