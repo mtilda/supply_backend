@@ -72,18 +72,18 @@ An inventory management system for small and medium scale groups, such as a hous
 ##### MVP
 |  Task  |  Estimated Time  |  Actual Time  |
 |---|---|---|
-|  Build basic backend                  |  8 h  |    |
-|  Host backend on Heroku               |  1 h  |    |
-|  Add data analysis to backend         |  20 h  |    |
-|  Build Layout component               |  3 h  |    |
-|  Add navigation buttons               |  3 h  |    |
-|  Build Home page                      |  1 h  |    |
-|  Build EventFeed components           |  4 h  |    |
-|  Build Activity page                  |  1 h  |    |
-|  Build ItemSearchBar component        |  4 h  |    |
-|  Build EventCreate component          |  3 h  |    |
-|  Build ItemDetails component          |  4 h  |    |
-| Total                                 |  52 h  |    |
+|  Build basic backend                  |  8 h  |  15  |
+|  Host backend on Heroku               |  1 h  |  2  |
+|  Add data analysis to backend         |  10 h  |  25  |
+|  Build Layout component               |  3 h  |  2  |
+|  Add navigation buttons               |  3 h  |  4  |
+|  Build Home page                      |  1 h  |  1  |
+|  Build EventFeed components           |  4 h  |  4  |
+|  Build Activity page                  |  1 h  |  1  |
+|  Build ItemSearchBar component        |  4 h  |  4  |
+|  Build EventCreate component          |  3 h  |  4  |
+|  Build ItemDetails component          |  4 h  |  4  |
+| Total                                 |  42 h  |  66  |
 
 ### Timeline
 
