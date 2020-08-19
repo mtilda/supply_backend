@@ -1,5 +1,9 @@
 # Project Overview
 
+### Repositories
+[API](https://github.com/mxkay/supply_backend)
+[Client](https://github.com/mxkay/supply_client)
+
 ### Description:
 
 An inventory management system for small and medium scale groups, such as a household sharing groceries, a small company sharing office supplies, or a community sharing tools. This app favors user comfort over rigorous data entry, so users can use this app casually and only when they need something from it.
