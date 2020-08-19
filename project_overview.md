@@ -21,17 +21,18 @@ An inventory management system for small and medium scale groups, such as a hous
 #### MVP
 - Deploy backend on Heroku
 - Users can access a group and its supplies
-- Users can create, edit, and delete supplies
-- Users can create, edit, and delete items in the supply
 - Users can report that an item is depleted, almost depleted, or replenished
 - Users can specify the appropriate unit type and unit (e.g. mass and grams) when inputing and reading data
 - Users can view a feed of supply activity
-- Users can view a live, sorted inventory that helps with shopping
-- Users can normalize the inventory to a specified period of time
 - Users can view statistical information about any item in the supply
-- Item quantities are continually estimated based on agrigate data, and items are flagged as almost depleted
+- User is served consumption statistics to help them make better informed purchases
 
 ### Post MVP
+- Item quantities are continually estimated based on agrigate data, and items are flagged as almost depleted
+- Users can create, edit, and delete supplies
+- Users can create, edit, and delete items in the supply
+- Users can view a live, sorted inventory that helps with shopping
+- Users can normalize the inventory to a specified period of time
 - User can recieve push notifications alerting them of changes to the supply
 - User can add, edit, and remove users (including themself) from a group
 - Users have different permissions within a group
