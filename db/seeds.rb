@@ -185,7 +185,7 @@ require 'time'
 
 def generate_events(iterations, item, users_array, deltas_array, inverse_consumption_rates_array, get_delays_array)
     day = 86400
-    now = Time.now - day * (deltas_array.sample * inverse_consumption_rates_array.sample - get_delays_array.sample)
+    now = Time.now - day * [0,2,4,6,8,10].sample
     events = []
     next_type = ["GET","DEPLETE"].sample
     current_quantity = 0
@@ -195,7 +195,7 @@ def generate_events(iterations, item, users_array, deltas_array, inverse_consump
             now -= day * get_delays_array.sample
             delta = deltas_array.sample
             current_quantity += delta
-            next_type = "DEPLETE"
+            next_type = ["GET","DEPLETE","DEPLETE","DEPLETE"].sample
             
             events.push({
                 :date_time => now,
