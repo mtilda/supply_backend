@@ -6,7 +6,9 @@ module ItemHelper
         
         @events.sort! { |a, b| a.date_time <=> b.date_time }
         
-        tracking = true
+        is_tracked = true
+        is_depleted = true
+        has_warning = false
         quantity_delta = 0
         date_time_of_last_deplete = nil
         consumption_rates_per_day = []
@@ -20,22 +22,26 @@ module ItemHelper
             case event.event_type
             
             when "START"
-                tracking = true
+                is_tracked = true
+                is_depleted = true
+                has_warning = false
                 quantity_delta = 0
                 date_time_of_last_deplete = nil
                 date_time_of_last_get = nil
             
             when "STOP"
-                tracking = false
+                is_tracked = false
+                is_depleted = true
+                has_warning = false
                 quantity_delta = 0
                 date_time_of_last_deplete = nil
                 date_time_of_last_get = nil
             
             when "GET"
-                if tracking
+                if is_tracked
                 
                     if date_time_of_last_get
-                
+                        
                         time_delta = event.date_time - date_time_of_last_get
                 
                         if time_delta >= 0
@@ -45,12 +51,14 @@ module ItemHelper
                         end
                     end
                     
+                    is_depleted = false
+                    has_warning = false
                     quantity_delta += event.delta.to_f
                     date_time_of_last_get = event.date_time
                 end
             
             when "DEPLETE"
-                if tracking
+                if is_tracked
                 
                     if date_time_of_last_deplete && quantity_delta > 0
                 
@@ -62,11 +70,20 @@ module ItemHelper
                             raise "invalid date_time comparison, events must be sorted in chronological order before analyzing"
                         end
                     end
-            
+                    
+                    is_depleted = true
+                    has_warning = false
                     quantity_delta = 0
                     date_time_of_last_deplete = event.date_time
                 end
             
+            when "WARNING"
+                if is_tracked
+                    
+                    has_warning = true
+
+                end
+
             else
                 raise "invalid event_type: #{event.event_type}, event id: #{event.id}"
             end
@@ -86,7 +103,10 @@ module ItemHelper
         
         Item.find(item_id).update({
             :average_consumption_rate_per_day => average_consumption_rate_per_day,
-            :average_get_time_delta => average_get_time_delta
+            :average_get_time_delta => average_get_time_delta,
+            :is_tracked => is_tracked,
+            :is_depleted => is_depleted,
+            :is_running_out => has_warning
         })
     end
 end
