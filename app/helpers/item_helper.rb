@@ -55,7 +55,7 @@ module ItemHelper
                     has_warning = false
                     quantity_delta += event.delta.to_f
                     date_time_of_last_get = event.date_time
-                end
+                end  
             
             when "DEPLETE"
                 if is_tracked
@@ -77,7 +77,7 @@ module ItemHelper
                     date_time_of_last_deplete = event.date_time
                 end
             
-            when "WARNING"
+            when "WARN"
                 if is_tracked
                     
                     has_warning = true
